@@ -12,8 +12,11 @@ def index():
     if request.method == 'POST':
         text = request.form['text']
         # Perform summarization
-        summary = summarizer(text, max_length=150, min_length=40, do_sample=False)
+        # Note: The output of the summarizer is a list of dictionaries
+        # Extracting the summary text from the output
+        summary_output = summarizer(text, max_length=150, min_length=40, do_sample=False)
+        summary = summary_output[0]['summary_text'] if summary_output else "No summary available."
     return render_template('index.html', summary=summary)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
